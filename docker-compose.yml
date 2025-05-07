@@ -13,6 +13,8 @@ services:
     networks:
       - app-network
     environment:
+      - NODE_ENV=development # Set environment to development
+      - CHOKIDAR_USEPOLLING=true # For hot-reloading on some file systems
       - REACT_APP_BACKEND_URL=http://backend:3001
 
   backend:
@@ -27,6 +29,7 @@ services:
     networks:
       - app-network
     environment:
+      - NODE_ENV=development # Set environment to development
       - PORT=3001
       - DB_USER=${DB_USER}
       - DB_HOST=db
