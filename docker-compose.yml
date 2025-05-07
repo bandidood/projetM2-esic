@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+    environment:
+      - REACT_APP_BACKEND_URL=http://backend:3001
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    depends_on:
+      - db
+    networks:
+      - app-network
+    environment:
+      - PORT=3001
+      - DB_USER=${DB_USER}
+      - DB_HOST=db
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_PORT=${DB_PORT}
+      - JWT_SECRET=${JWT_SECRET}
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    ports:
+      - "5432:5432" # Optional: Expose DB port if you need to connect from host
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  db_data:
