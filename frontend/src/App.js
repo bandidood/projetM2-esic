@@ -1,9 +1,9 @@
-import React from 'react';
+import './App.css';
 
 function App() {
   return (
-    <div>
-      <h1>Hello, World!</h1>
+    <div className="App">
+      <h1>Hello from the frontend!</h1>
     </div>
   );
 }
